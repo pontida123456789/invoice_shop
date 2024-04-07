@@ -129,6 +129,9 @@ public class User_Frame extends JFrame {
 		textField_user_id.setBounds(787, 53, 210, 25);
 		contentPane.add(textField_user_id);
 		
+		//set icon ให้กับโปรเเกรม
+		setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/invoice.png")).getImage());
+		
 		JLabel lbl_Name = new JLabel("Username");
 		lbl_Name.setFont(new Font("Tahoma", Font.BOLD, 16));
 		lbl_Name.setBounds(788, 89, 146, 20);

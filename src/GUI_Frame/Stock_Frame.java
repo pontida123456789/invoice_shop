@@ -30,6 +30,7 @@ import java.awt.event.MouseEvent;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 import java.awt.SystemColor;
@@ -103,6 +104,9 @@ public class Stock_Frame extends JFrame {
 		contentPane.setBackground(new Color(100, 149, 237));
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
 
+		//set icon ให้กับโปรเเกรม
+		setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/invoice.png")).getImage());
+				
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		
@@ -243,7 +247,7 @@ public class Stock_Frame extends JFrame {
 		btn_add.setText("ADD");
 		btn_add.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(checkTextField())
+				if(checkTextField()&&checkTypeInt()&&checkTypeDouble())
 				{
 					String Pname = textField_Name.getText();
 					double Pprice = Double.parseDouble(textField_Price.getText());
@@ -265,7 +269,7 @@ public class Stock_Frame extends JFrame {
 		btnEdit.setBounds(333, 510, 146, 44);
 		btnEdit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				if(checkTextField())
+				if(checkTextField()&&checkTypeInt()&&checkTypeDouble())
 				{
 					String Pname = textField_Name.getText();
 					double Pprice = Double.parseDouble(textField_Price.getText());
@@ -414,27 +418,72 @@ public class Stock_Frame extends JFrame {
 		    }
 	}
 	
-	public void addImagePanel(String path, int width, int height) {
-	    try {
-	    	panelImage.removeAll();
-	        BufferedImage originalImg = ImageIO.read(new File(path));
-	        Image scaledImg = originalImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	public void addImagePanel(String path, int width, int height)
+	{
+	    
+		if(path.charAt(0)== '/')//สำหรับโหลดรูปภาพที่อยู่ใน JAR File ที่เเนบไปในโปรเเกรม ซึ่งจะขึ้นต้นด้วย / เสมอ เพราะรูปเราอยู่ใน /image/xxx.png เป็นรูปตั้งต้นที่อยากให้ผู้ใช้เห็นตอนเริ่มโปรเเกรมโดยลิ้งค์ใน db ก็จะเก็บในลักษณะนี้
+    	{
+    		try {
+    			panelImage.removeAll();
+    	        // อ่านไฟล์รูปภาพจาก InputStream
+    	        InputStream inputStream = getClass().getResourceAsStream(path);
+    	        if (inputStream != null) {
+    	            BufferedImage originalImg = ImageIO.read(inputStream);
 
-	        BufferedImage bufferedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
-	        Graphics2D g2d = bufferedImg.createGraphics();
-	        g2d.drawImage(scaledImg, 0, 0, null);
-	        g2d.dispose();
+    	            // ปรับขนาดรูปภาพ
+    	            Image scaledImg = originalImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-	        JLabel picLabel = new JLabel(new ImageIcon(bufferedImg));
-	        panelImage.add(picLabel);
-	        
-	        // ตรวจสอบขนาดของ JPanel และเรียกใช้ revalidate() และ repaint()
-	        panelImage.setPreferredSize(new Dimension(width, height));
-	        panelImage.revalidate();
-	        panelImage.repaint();
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+    	            // สร้าง BufferedImage ใหม่
+    	            BufferedImage bufferedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+    	            // วาดรูปภาพลงบน BufferedImage ใหม่
+    	            Graphics2D g2d = bufferedImg.createGraphics();
+    	            g2d.drawImage(scaledImg, 0, 0, null);
+    	            g2d.dispose();
+    	            
+    	            JLabel picLabel = new JLabel(new ImageIcon(bufferedImg));
+    		        panelImage.add(picLabel);
+    		        
+    		        // ตรวจสอบขนาดของ JPanel และเรียกใช้ revalidate() และ repaint()
+    		        panelImage.setPreferredSize(new Dimension(width, height));
+    		        panelImage.revalidate();
+    		        panelImage.repaint();
+    	           
+    	        } else {
+    	            // กรณีที่ InputStream เป็น null
+    	            System.out.println("Input stream is null!");
+    	           
+    	        }
+    	    } catch (IOException e) {
+    	        // กรณีเกิดข้อผิดพลาดในการอ่านไฟล์
+    	        e.printStackTrace();
+    	        
+    	    }
+    	}  	
+    	else
+    	{
+
+			try {//สำหรับอัพโหลดรูปทั่วไปที่ไม่ใช่ link ในไฟล์ jar
+		    	panelImage.removeAll();
+		        BufferedImage originalImg = ImageIO.read(new File(path));
+		        Image scaledImg = originalImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+	
+		        BufferedImage bufferedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+		        Graphics2D g2d = bufferedImg.createGraphics();
+		        g2d.drawImage(scaledImg, 0, 0, null);
+		        g2d.dispose();
+	
+		        JLabel picLabel = new JLabel(new ImageIcon(bufferedImg));
+		        panelImage.add(picLabel);
+		        
+		        // ตรวจสอบขนาดของ JPanel และเรียกใช้ revalidate() และ repaint()
+		        panelImage.setPreferredSize(new Dimension(width, height));
+		        panelImage.revalidate();
+		        panelImage.repaint();
+		    } catch (IOException e) {
+		        e.printStackTrace();
+		    }
+    	}
 	}
 	  
 	// เมธอดหรือคอนสตรักเตอร์ที่ใช้ในการกำหนดค่า cafeGUI
@@ -496,6 +545,32 @@ public class Stock_Frame extends JFrame {
 			textField_id.setText("");
 			panelImage.removeAll();
 			panelImage.repaint(); 
+	 }
+	 public boolean checkTypeDouble()
+	 {		
+		    try
+		    {   //พยายามเเบ่ง text เป็น Int ดูว่าทำได้ไหมถ้าไม่ได้ ก็เเปลว่ามันไม่ใช่ตัวเลขก็จะไปเข้า Exception
+		        Double.parseDouble(textField_Price.getText());
+		        return true;
+		    } catch (NumberFormatException ex)
+		    {
+				 JOptionPane.showMessageDialog(Stock_Frame.this, "Pleas Enter Price only NUMBER!!!");
+		        return false;
+		    }
+		
+	 }
+	 public boolean checkTypeInt()
+	 {		
+		    try
+		    {   //พยายามเเบ่ง text เป็น Int ดูว่าทำได้ไหมถ้าไม่ได้ ก็เเปลว่ามันไม่ใช่ตัวเลขก็จะไปเข้า Exception
+		        Integer.parseInt(textField_Qty.getText());
+		        return true;
+		    } catch (NumberFormatException ex)
+		    {
+				 JOptionPane.showMessageDialog(Stock_Frame.this, "Pleas Enter Quantity only Integer!!!");
+		        return false;
+		    }
+		
 	 }
 	public boolean checkTextField()
 	{

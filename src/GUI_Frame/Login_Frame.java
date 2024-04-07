@@ -59,7 +59,9 @@ public class Login_Frame extends JFrame {
 		contentPane = new JPanel();
 		contentPane.setBackground(SystemColor.window);
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
-
+		//set icon ให้กับโปรเเกรม
+		setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/invoice.png")).getImage());
+		
 		setContentPane(contentPane);
 		contentPane.setLayout(null);
 		

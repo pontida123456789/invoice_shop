@@ -42,6 +42,7 @@ import java.awt.image.BufferedImage;
 import java.awt.print.PrinterException;
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
@@ -126,6 +127,9 @@ public class main_Frame extends JFrame {
 		panel.setForeground(SystemColor.desktop);
 		panel.setBounds(200, 200, 900, 605);
 		panel.setLayout(new GridLayout(0,3,0,0));
+		
+		//set icon ให้กับโปรเเกรม
+		setIconImage(new javax.swing.ImageIcon(getClass().getResource("/image/invoice.png")).getImage());
 		
 		LoadProduct();
 		setTime();
@@ -224,6 +228,7 @@ public class main_Frame extends JFrame {
 									
 								}
 							}
+							reset();
 							
 						}
 //					เพื่อให้ไฟล์เสียงเล่นในไฟล์ JAR ได้ ก็ต้อง getClass().getResource(path)เหมือนกับ ที่ทำกับรูปด้วยเพื่อให้ไฟล์ JAR เข้าถึงไฟล์ buildPath ในตัวมันเองด้วย
@@ -271,7 +276,7 @@ public class main_Frame extends JFrame {
 		btn_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if (JOptionPane.showConfirmDialog(main_Frame.this, "Do you want to leave form this program?" ,"Confirm to exit", JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION) 
+				if (JOptionPane.showConfirmDialog(main_Frame.this, "Do you want to leave from this program?" ,"Confirm to exit", JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION) 
 				{
 					System.exit(0);
 				} 
@@ -574,7 +579,10 @@ public  void LoadProduct()
 {   
 	
 	//อย่าลืม reset array ของ japinner ด้วยเพราะทุกๆรอบที่มันเอาไปใช้มันมีการสรา้งใหม่เสมอออออ ถ้าเราเอาไปใช้ข้างนอก array ของ japinner มันไม่ได้หายไปไหน
+	//อย่าลืม reset array ของ ProductNameList เเละ ProductPriceList ด้วยเพราะทุกๆรอบที่มันเอาไปใช้มันมีการสรา้งใหม่เรื่อยๆถ้าไม่เปิดปิดโปรเเกรมใหม่ ทุกครั้งที่เรา add product มันก็จะยาวขึ้นทำให้ลำดับที่เราดึงไปใช้เพี้ยน ถ้าเราเอาไปใช้ข้างนอก array ของ nameproduct เเละ price มันไม่ได้หายไปไหน
 	QuantityListJspinner.clear();
+	ProductNameList.clear();
+	ProductPriceList.clear();
 	panel.removeAll();
 	panel.repaint();
 	//ดึงข้อมูลของProduct มาจากฐานข้อมูล
@@ -808,26 +816,63 @@ public void setTime()
 		}
 	}).start();
 }
- private ImageIcon loadImg(String path,int width,int heigth)
- {
-	 
-	 try 
-	 {BufferedImage originalImg = ImageIO.read(new File(path));
-     Image scaledImg = originalImg.getScaledInstance(width, heigth, Image.SCALE_SMOOTH);
+private ImageIcon loadImg(String path, int width, int height) {
+    
+    	if(path.charAt(0)== '/')//สำหรับโหลดรูปภาพที่อยู่ใน JAR File ที่เเนบไปในโปรเเกรม ซึ่งจะขึ้นต้นด้วย / เสมอ เพราะรูปเราอยู่ใน /image/xxx.png เป็นรูปตั้งต้นที่อยากให้ผู้ใช้เห็นตอนเริ่มโปรเเกรมโดยลิ้งค์ใน db ก็จะเก็บในลักษณะนี้
+    	{
+    		try {
+    	        // อ่านไฟล์รูปภาพจาก InputStream
+    	        InputStream inputStream = getClass().getResourceAsStream(path);
+    	        if (inputStream != null) {
+    	            BufferedImage originalImg = ImageIO.read(inputStream);
 
-     BufferedImage bufferedImg = new BufferedImage(width, heigth, BufferedImage.TYPE_INT_ARGB);
-     Graphics2D g2d = bufferedImg.createGraphics();
-     g2d.drawImage(scaledImg, 0, 0, null);
-     g2d.dispose();
+    	            // ปรับขนาดรูปภาพ
+    	            Image scaledImg = originalImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
 
-     return new ImageIcon(bufferedImg); 
-	 } 
-	 catch (IOException e) 
-	 {
-		e.printStackTrace();
-		return null;
-	}	 
- }
+    	            // สร้าง BufferedImage ใหม่
+    	            BufferedImage bufferedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+
+    	            // วาดรูปภาพลงบน BufferedImage ใหม่
+    	            Graphics2D g2d = bufferedImg.createGraphics();
+    	            g2d.drawImage(scaledImg, 0, 0, null);
+    	            g2d.dispose();
+
+    	            // สร้าง ImageIcon จาก BufferedImage ที่ปรับขนาดแล้ว
+    	            return new ImageIcon(bufferedImg);
+    	        } else {
+    	            // กรณีที่ InputStream เป็น null
+    	            System.out.println("Input stream is null!");
+    	            return null;
+    	        }
+    	    } catch (IOException e) {
+    	        // กรณีเกิดข้อผิดพลาดในการอ่านไฟล์
+    	        e.printStackTrace();
+    	        return null;
+    	    }
+    	}  	
+    	else
+    	{
+    		try 
+    		 {//เอาไว้สำหรับโหลดรูปธรรมดาที่เก็บไว้ในที่ต่างๆในคอม เพื่อให้ผู้ใช้งานสามารถใช้งานได้ตามปกติ
+    		 BufferedImage originalImg = ImageIO.read(new File(path));
+    	     Image scaledImg = originalImg.getScaledInstance(width, height, Image.SCALE_SMOOTH);
+
+    	     BufferedImage bufferedImg = new BufferedImage(width, height, BufferedImage.TYPE_INT_ARGB);
+    	     Graphics2D g2d = bufferedImg.createGraphics();
+    	     g2d.drawImage(scaledImg, 0, 0, null);
+    	     g2d.dispose();
+
+    	     return new ImageIcon(bufferedImg); 
+    		 } 
+    		 catch (IOException e) 
+    		 {
+    			e.printStackTrace();
+    			return null;
+    		}	 
+    	}
+        
+}
+
  public void playSound(String soundFilePath) {
      try {
 //    	 getClass().getResource(string path) return ค่าออกมาเป็นประเภท URL 
