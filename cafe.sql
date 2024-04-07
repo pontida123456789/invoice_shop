@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 07, 2024 at 08:31 PM
+-- Generation Time: Apr 07, 2024 at 09:10 PM
 -- Server version: 10.4.19-MariaDB
 -- PHP Version: 7.4.19
 
@@ -182,8 +182,7 @@ INSERT INTO `products` (`product_id`, `product_name`, `product_price`, `product_
 (45, 'Fluffy Waffle', 139, 23, '/image/Fluffy_waffle.jpg', '1234', '2024-04-07 00:12:50'),
 (46, 'Happy set', 189, 24, '/image/Happy_set.jpg', '1234', '2024-04-07 00:12:50'),
 (47, 'Strawbwrry_Bingsoo', 189, 26, '/image/strawberry_bigsoo.jpg', '1234', '2024-04-07 00:12:50'),
-(48, 'Mango sticky rice', 69, 31, '/image/Mango_stickyIrice.jpeg', '1234', '2024-04-07 00:12:50'),
-(70, 'donut', 20, 10, 'C:\\Users\\eyeis\\Downloads\\Donut.jpg', '1234', '2024-04-07 00:14:01');
+(48, 'Mango sticky rice', 69, 31, '/image/Mango_stickyIrice.jpeg', '1234', '2024-04-07 00:12:50');
 
 -- --------------------------------------------------------
 
