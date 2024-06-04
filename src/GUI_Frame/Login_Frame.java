@@ -102,7 +102,7 @@ public class Login_Frame extends JFrame {
 				
 				if(user.CheckUserLogin(textField_username.getText(),PasswordString))
 				{
-					main_Frame cafeFrame = new main_Frame();
+					Main_Frame cafeFrame = new Main_Frame();
 					cafeFrame.setVisible(true);
 					Login_Frame.this.dispose();					
 				}

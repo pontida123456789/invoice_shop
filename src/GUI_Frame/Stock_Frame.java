@@ -40,7 +40,7 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.table.JTableHeader;
 import javax.swing.table.TableCellRenderer;
 
-import GUI_Frame.main_Frame;
+import GUI_Frame.Main_Frame;
 import Management.ProductDB;
 import Management.ProductManager;
 import Management.UserDB_Current;
@@ -64,7 +64,7 @@ public class Stock_Frame extends JFrame {
 	private JPanel panelImage;
 	private JTextField textField_URLimage;
 	 // ประกาศตัวแปรเก็บอินสแตนซ์ของ cafe_GUI
-    private main_Frame cafeGUI;
+    private Main_Frame cafeGUI;
     private JTextField textField_search;
 	/**
 	 * Launch the application.
@@ -77,7 +77,7 @@ public class Stock_Frame extends JFrame {
 				            UIManager.getSystemLookAndFeelClassName());
 					
 					 // สร้างอินสแตนซ์ของ cafe_GUI
-	                main_Frame cafeGUI = new main_Frame();
+	                Main_Frame cafeGUI = new Main_Frame();
 	                // กำหนดค่า cafe_GUI ให้กับ Stock_Frame
 	                
 					Stock_Frame frame = new Stock_Frame(cafeGUI);
@@ -94,7 +94,7 @@ public class Stock_Frame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public Stock_Frame(main_Frame cafeGUI) {
+	public Stock_Frame(Main_Frame cafeGUI) {
 		setResizable(false);
 		this.cafeGUI = cafeGUI;
 		
@@ -487,7 +487,7 @@ public class Stock_Frame extends JFrame {
 	}
 	  
 	// เมธอดหรือคอนสตรักเตอร์ที่ใช้ในการกำหนดค่า cafeGUI
-    public void setCafeGUI(main_Frame cafeGUI) {
+    public void setCafeGUI(Main_Frame cafeGUI) {
         this.cafeGUI = cafeGUI;
     }   
     

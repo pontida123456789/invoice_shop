@@ -109,4 +109,45 @@ public class InvoiceManager {
 				}
 				return 0; //ถ้าไม่ได้ insert จะ return 0
 			}
+			public ArrayList<Invoice_detailDB> getAllInvoice_detail(String intitialDay,String endDay) 
+			{   //Got an exception! 
+				//Cannot invoke "java.sql.Connection.prepareStatement(String)" because "this.con" is null
+				//คือยังไม่ได้เชื่อมต่อฐานข้อมูล
+				Connect();
+				
+				ArrayList<Invoice_detailDB> list =new ArrayList<Invoice_detailDB>();
+				
+				try
+			    {	
+				  pst = con.prepareStatement("SELECT invoice_datail.invoice_id,price_per_list,product_id,Qty,time_print_invoice\r\n"
+				  		+ "FROM invoice_datail\r\n"
+				  		+ "JOIN invoice\r\n"
+				  		+ "ON invoice_datail.invoice_id = invoice.invoice_id\r\n"
+				  		+ "WHERE time_print_invoice BETWEEN '"+intitialDay+" 00:00:00' AND '"+endDay+" 23:59:59'");
+				  rs = pst.executeQuery();
+			      while (rs.next())
+			      {  
+			    	int invoice_id = rs.getInt(1);//จะใส่เลข 1 เเทนก็ได้
+			      	double price_per_list = rs.getInt(2);
+			      	int product_id = rs.getInt(3);
+			      	int Quantity = rs.getInt(4);
+			      	String time_print_invoice = rs.getString(5);
+			        
+			        
+			      	Invoice_detailDB cc = new Invoice_detailDB(invoice_id,product_id,Quantity, price_per_list,time_print_invoice);//ตอนนี้เราได้ customer คนใหม่เเล้ว
+			        list.add(cc);//เเล้วเราก็เอา customer add ลง list
+			        for (Invoice_detailDB c : list)//เอาไว้เช็คว่า img เป็น null ไหม
+				        {
+				            System.out.println("invoice_id: " + c.invoice_id );
+				        }
+			      }
+			      pst.close();
+			    }
+				catch (Exception e)
+			    {
+			      System.err.println("Got an exception! ");
+			      System.err.println(e.getMessage());
+			    }
+				return list;//มันก็จะรีเทินออกไปเเต่ตอนนี้ยังไม่ได้เชื่อมต่อกับ db
+			}
 }

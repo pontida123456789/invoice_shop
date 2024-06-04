@@ -68,8 +68,9 @@ import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.applet.*;
 import java.net.*;
+import javax.swing.Icon;
 
-public class main_Frame extends JFrame {
+public class Main_Frame extends JFrame {
 	//****btn.setEneble(true)คือทำให้ปุ่มยังกดได้ ถ้า false คือกดไม่ได้เเล้ว ไว้ใช้กับเรื่อง user****
 //	if(QuantityList.get(i).getValue() instanceof Double && (Double)QuantityList.get(i).getValue() != 0.0) {
 //	    // คำสั่งที่ต้องการให้ทำ
@@ -101,7 +102,7 @@ public class main_Frame extends JFrame {
 				try {
 					  UIManager.setLookAndFeel(
 					            UIManager.getSystemLookAndFeelClassName());
-					main_Frame frame = new main_Frame();
+					Main_Frame frame = new Main_Frame();
 					frame.setVisible(true);
 				} catch (Exception e) {
 					e.printStackTrace();
@@ -113,7 +114,7 @@ public class main_Frame extends JFrame {
 	/**
 	 * Create the frame.
 	 */
-	public main_Frame()
+	public Main_Frame()
 	{
 		setResizable(false);
 		
@@ -140,7 +141,7 @@ public class main_Frame extends JFrame {
 		getContentPane().add(scrollPane);
 		
 		JButton btn_preview = new JButton(MysetIconForJAR_File("/image/preview_icon.png"));
-		btn_preview.setBounds(50, 676, 142, 41);
+		btn_preview.setBounds(50, 676, 130, 41);
 		btn_preview.setBackground(SystemColor.activeCaption);
 		btn_preview.setForeground(Color.BLACK);
 		btn_preview.setText("Preview");
@@ -165,7 +166,7 @@ public class main_Frame extends JFrame {
 		
 		//ใส่ icon ให้กับปุ่ม ด้วยฟังชัน setIcon ที่สร้างไว้ปรับขนาด icon เเล้ว
 		JButton btn_reset = new JButton(MysetIconForJAR_File("/image/refresh_icon.png"));
-		btn_reset.setBounds(209, 677, 134, 41);
+		btn_reset.setBounds(190, 676, 110, 41);
 		btn_reset.setBackground(SystemColor.activeCaption);
 		btn_reset.setText("Reset");
 		btn_reset.addActionListener(new ActionListener() {
@@ -180,7 +181,7 @@ public class main_Frame extends JFrame {
 		btn_reset.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JButton btn_print = new JButton(MysetIconForJAR_File("/image/print_icon.jpeg"));
-		btn_print.setBounds(360, 677, 134, 41);
+		btn_print.setBounds(310, 676, 120, 41);
 		btn_print.setBackground(SystemColor.activeCaption);
 		btn_print.setText("Print");
 		btn_print.addActionListener(new ActionListener() {
@@ -248,11 +249,11 @@ public class main_Frame extends JFrame {
 		btn_stock = new JButton(MysetIconForJAR_File("/image/stock_icon.png"));
 		btn_stock.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				Stock_Frame SF =  new Stock_Frame(main_Frame.this);
+				Stock_Frame SF =  new Stock_Frame(Main_Frame.this);
 				SF.setVisible(true);
 			}
 		});
-		btn_stock.setBounds(511, 677, 133, 41);
+		btn_stock.setBounds(442, 676, 120, 41);
 		btn_stock.setBackground(SystemColor.activeCaption);
 		btn_stock.setText("Stock");
 		btn_stock.setFont(new Font("Tahoma", Font.BOLD, 18));
@@ -264,19 +265,19 @@ public class main_Frame extends JFrame {
 				UF.setVisible(true);
 			}
 		});
-		btn_user.setBounds(665, 676, 133, 41);
+		btn_user.setBounds(572, 676, 110, 41);
 		btn_user.setBackground(SystemColor.activeCaption);
 		btn_user.setText("User");
 		btn_user.setFont(new Font("Tahoma", Font.BOLD, 18));
 		
 		JButton btn_Exit = new JButton(MysetIconForJAR_File("/image/Exit_icon.png"));
-		btn_Exit.setBounds(816, 676, 134, 41);
+		btn_Exit.setBounds(830, 676, 110, 41);
 		btn_Exit.setBackground(SystemColor.activeCaption);
 		btn_Exit.setText("Exit");
 		btn_Exit.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
 				
-				if (JOptionPane.showConfirmDialog(main_Frame.this, "Do you want to leave from this program?" ,"Confirm to exit", JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION) 
+				if (JOptionPane.showConfirmDialog(Main_Frame.this, "Do you want to leave from this program?" ,"Confirm to exit", JOptionPane.YES_NO_OPTION)== JOptionPane.YES_OPTION) 
 				{
 					System.exit(0);
 				} 
@@ -369,7 +370,7 @@ public class main_Frame extends JFrame {
 			public void keyPressed(KeyEvent e) {
 				 if (e.getKeyCode() == KeyEvent.VK_ENTER) {//การกด enter ในกล่อง search
 					 
-					 LoadProductSearch(textField_SearchProduct.getText());
+					 LoadProductSearch("%"+textField_SearchProduct.getText()+"%");
 						if(textField_SearchProduct.getText().isEmpty())
 						{
 							LoadProduct();
@@ -406,19 +407,36 @@ public class main_Frame extends JFrame {
 		getContentPane().add(lblNewLabel_date);
 		lblNewLabel_date.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		
+		JButton btn_Export = new JButton(MysetIconForJAR_File("/image/csv_icon.png"));
+		btn_Export.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				Export_Frame frame = new Export_Frame();
+				frame.setVisible(true);
+			}
+		});
+		btn_Export.setText("Export ");
+		btn_Export.setFont(new Font("Tahoma", Font.BOLD, 18));
+		btn_Export.setBackground(SystemColor.activeCaption);
+		btn_Export.setBounds(692, 676, 130, 41);
+		getContentPane().add(btn_Export);
+		
 		
 		//เช็คว่าสิทธ์การเข้าถึงว่าจะให้เข้าถึงปุ่ม stock กับ user ได้ไหม
 		if(userPrivilage())
 		{//ถ้าเป็นจริงเเสดงว่าเป็น Admin ให้เข้าถึงปุ่ม stock กับ user ได้
 			btn_stock.setEnabled(true);
 			btn_user.setEnabled(true);
+			btn_Export.setEnabled(true);
 		}
 		else
 		{
 			btn_stock.setEnabled(false);
 			btn_user.setEnabled(false);
+			btn_Export.setEnabled(false);
 			btn_stock.setIcon(MysetIconForJAR_File("/image/Lock_icon.png"));
 			btn_user.setIcon(MysetIconForJAR_File("/image/Lock_icon.png"));
+			btn_Export.setIcon(MysetIconForJAR_File("/image/Lock_icon.png"));
+			
 		}
 	}
 
@@ -427,7 +445,7 @@ public class main_Frame extends JFrame {
 	    ImageIcon iconReset = new ImageIcon(getClass().getResource(path));
 	    // นำไอคอน ImageIcon ไปปรับขนาด
 	    Image img = iconReset.getImage();
-	    Image newImg = img.getScaledInstance(25, 25, Image.SCALE_SMOOTH);
+	    Image newImg = img.getScaledInstance(20, 20, Image.SCALE_SMOOTH);
 	    ImageIcon resizedIcon = new ImageIcon(newImg);
 	    return resizedIcon;
 	}
@@ -453,12 +471,12 @@ public class main_Frame extends JFrame {
 	        }
 	        // ตรวจสอบว่าถึงแล้วที่ต้องการแจ้งเตือน
 	        if (count == QuantityListJspinner.size()) {
-	            JOptionPane.showMessageDialog(main_Frame.this, "please select item!!!");
+	            JOptionPane.showMessageDialog(Main_Frame.this, "please select item!!!");
 	            return true;
 	        }
 	    }
 	    // กรณีไม่พบข้อผิดพลาด
-	    JOptionPane.showMessageDialog(main_Frame.this, "Error from NoSelectItem");
+	    JOptionPane.showMessageDialog(Main_Frame.this, "Error from NoSelectItem");
 	    return true;
 	}
 
