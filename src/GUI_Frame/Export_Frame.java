@@ -14,6 +14,8 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Set;
 import java.util.regex.*;
 
 import java.awt.Font;
@@ -37,6 +39,16 @@ import java.io.File;
 import java.awt.Desktop;
 import javax.swing.JComboBox;
 
+import java.nio.file.Files;
+import java.nio.file.attribute.AclEntry;
+import java.nio.file.attribute.AclEntryPermission;
+import java.nio.file.attribute.AclEntryType;
+import java.nio.file.attribute.AclFileAttributeView;
+import java.nio.file.attribute.FileAttribute;
+import java.nio.file.attribute.PosixFilePermission;
+import java.nio.file.attribute.PosixFilePermissions;
+import java.nio.file.attribute.UserPrincipal;
+import java.nio.file.Path;
 public class Export_Frame extends JFrame {
 
 	private static final long serialVersionUID = 1L;
@@ -143,8 +155,9 @@ public class Export_Frame extends JFrame {
 							}
 							else
 							{
-								File file = new File("C:\\user\\Desktop\\List_of_invoice\\"+file_name+".csv");
+								File file = new File("C:\\List_of_invoice\\"+file_name+".csv");
 								file.getParentFile().mkdirs();
+								
 								try 
 								{	
 									FileWriter fw = new FileWriter(file);

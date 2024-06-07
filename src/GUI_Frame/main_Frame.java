@@ -651,9 +651,7 @@ public  void LoadProduct()
 					// เพิ่มเส้นแบ่งระหว่าง Grid ด้วย LineBorde
 //					sub_panel.setBorder(new LineBorder(Color.BLACK));
 					sub_panel. setBorder(BorderFactory. createLineBorder(Color. black));
-			}		
-//					label.setFont(new Font("Serif", Font.PLAIN, 20)); 
-					
+			}							
 					
 					JLabel name = new JLabel("Name :");
 					name.setFont(new Font("Tahoma", Font.BOLD, 15));
